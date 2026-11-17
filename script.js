@@ -29,7 +29,7 @@ input.addEventListener('keydown', (e) => { if (e.key === 'Enter') tryUnlock(); }
 closeBtn.addEventListener('click', () => { overlay.hidden = true; gate.hidden = false; input.value = ''; song.pause(); stopHeartsRain(); });
 muteBtn.addEventListener('click', () => { song.muted = !song.muted; muteBtn.textContent = song.muted ? '🔇' : '🔊'; });
 
-const RAIN = ['💗', '💖', '🌸', '🐍', '🤍', '✨', '🌷'];
+const RAIN = ['💗', '💖', '🌸', '🦋', '🤍', '✨', '🌷'];
 function startHeartsRain() {
     stopHeartsRain();
     rainTimer = setInterval(() => {
@@ -45,7 +45,7 @@ function startHeartsRain() {
 }
 function stopHeartsRain() { if (rainTimer) clearInterval(rainTimer); rainTimer = null; heartsRain.innerHTML = ''; }
 
-const EMOJIS = ['🐍', '🌸', '✨', '💗', '🌷', '💖', '🐍', '🌸'];
+const EMOJIS = ['🦋', '🌸', '✨', '💗', '🌷', '💖', '🦋', '🌸'];
 const container = document.getElementById('particles');
 for (let i = 0; i < 18; i++) {
     const span = document.createElement('span'); span.className = 'particle';
