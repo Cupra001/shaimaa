@@ -9,7 +9,6 @@ body {
     min-height: 100vh;
     margin: 0;
     font-family: 'Cairo', sans-serif;
-    /* ضبط التركيز على يمين ووسط الصورة (right center) لتظهر الأميرة والفارس معاً على الهواتف */
     background: url('Background.png') right center / cover no-repeat fixed;
     display: flex;
     align-items: center;
@@ -40,6 +39,7 @@ body::before {
     z-index: 1;
 }
 
+/* تأثير الدخان المتبع لحركة الماوس */
 .mouse-smoke {
     position: absolute;
     pointer-events: none;
@@ -171,6 +171,7 @@ body::before {
     padding: 10px 25px;
 }
 
+/* الدخان المبعثر والمستمر حول الاسم */
 .scatter-smoke {
     position: absolute;
     background: url('smoke.png') center/contain no-repeat;
@@ -559,7 +560,6 @@ body::before {
     background: rgba(50, 50, 65, 0.9);
 }
 
-/* تنسيق أزرار وأداة التحكم بالصوت داخل الرسالة */
 .audio-control-wrap {
     display: flex;
     align-items: center;

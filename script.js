@@ -43,13 +43,11 @@ closeBtn.addEventListener('click', () => {
     stopHeartsRain();
 });
 
-// زر الكتم والتشغيل
 muteBtn.addEventListener('click', () => {
     song.muted = !song.muted;
     muteBtn.textContent = song.muted ? '🔇' : '🔊';
 });
 
-// شريط التحكم برفع وخفض الصوت
 volumeSlider.addEventListener('input', (e) => {
     const val = parseFloat(e.target.value);
     song.volume = val;
@@ -62,7 +60,7 @@ volumeSlider.addEventListener('input', (e) => {
     }
 });
 
-/* توليد جسيمات دخانية مبعثرة ومستمرة حول اسم شيماء */
+/* توليد الدخان المبعثر والمستمر حول اسم شيماء */
 const scatterContainer = document.getElementById('scatterSmokeContainer');
 if (scatterContainer) {
     setInterval(() => {
