@@ -5,6 +5,7 @@ const input = document.getElementById('codeInput');
 const unlockBtn = document.getElementById('unlockBtn');
 const closeBtn = document.getElementById('closeBtn');
 const muteBtn = document.getElementById('muteBtn');
+const volumeSlider = document.getElementById('volumeSlider');
 const errorEl = document.getElementById('error');
 const song = document.getElementById('song');
 const heartsRain = document.getElementById('heartsRain');
@@ -17,7 +18,7 @@ function tryUnlock() {
         overlay.hidden = false;
         startHeartsRain();
         song.currentTime = 0;
-        song.volume = 0.85;
+        song.volume = volumeSlider.value;
         const p = song.play();
         if (p) p.catch(() => { });
     } else {
@@ -41,9 +42,24 @@ closeBtn.addEventListener('click', () => {
     song.pause();
     stopHeartsRain();
 });
+
+// زر الكتم والتشغيل
 muteBtn.addEventListener('click', () => {
     song.muted = !song.muted;
     muteBtn.textContent = song.muted ? '🔇' : '🔊';
+});
+
+// شريط التحكم برفع وخفض الصوت
+volumeSlider.addEventListener('input', (e) => {
+    const val = parseFloat(e.target.value);
+    song.volume = val;
+    if (val === 0) {
+        song.muted = true;
+        muteBtn.textContent = '🔇';
+    } else {
+        song.muted = false;
+        muteBtn.textContent = '🔊';
+    }
 });
 
 /* توليد جسيمات دخانية مبعثرة ومستمرة حول اسم شيماء */
@@ -53,7 +69,6 @@ if (scatterContainer) {
         const smokeP = document.createElement('div');
         smokeP.className = 'scatter-smoke';
 
-        // توزيع عشوائي مبعثر يحيط بالاسم بالكامل دون أن يتوسطه بشكل خاطئ
         const rx = (Math.random() - 0.5) * 160;
         const ry = (Math.random() - 0.5) * 60;
 
@@ -79,7 +94,7 @@ if (scatterContainer) {
 
         scatterContainer.appendChild(smokeP);
         setTimeout(() => smokeP.remove(), duration * 1000);
-    }, 60); // سرعة التدفق والتكرار المستمر
+    }, 60);
 }
 
 /* تفاعل الدخان مع حركة الماوس */

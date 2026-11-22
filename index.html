@@ -17,7 +17,6 @@
     <div class="card" id="gate">
         <div class="butterfly">🥀</div>
         <p class="intro">رسالة خاصة من قلب ضياء إلى:</p>
-        <!-- حاوية الدخان المبعثر والمستمر حول اسم شيماء -->
         <div class="name-container">
             <div id="scatterSmokeContainer"
                 style="position: absolute; inset: 0; pointer-events: none; overflow: visible;"></div>
@@ -71,7 +70,11 @@
                 </div>
             </div>
             <div class="actions">
-                <button class="muteBtn" id="muteBtn" title="كتم / تشغيل">🔊</button>
+                <div class="audio-control-wrap">
+                    <button class="muteBtn" id="muteBtn" title="كتم / تشغيل">🔊</button>
+                    <input type="range" id="volumeSlider" class="volumeSlider" min="0" max="1" step="0.05" value="0.85"
+                        title="مستوى الصوت">
+                </div>
                 <button class="closeBtn" id="closeBtn">إغلاق الرسالة 🖤</button>
             </div>
         </div>
