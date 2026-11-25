@@ -4,29 +4,35 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>🥀 𝓢𝓱𝓪𝓲𝓶𝓪𝓪 🖤 </title>
+    <title>🌸 إشراقة شيماء ✨</title>
     <link rel="icon" type="image/png" href="icon.png" />
     <link rel="stylesheet" href="style.css" />
 </head>
 
 <body>
-    <div class="smoke-bg" id="smokeBg"></div>
+    <div class="bloom-glow" id="bloomGlow" aria-hidden="true"></div>
     <div class="particles" id="particles" aria-hidden="true"></div>
 
-    <h2 class="title">دموع الورد والعتاب 🥀🖤</h2>
+    <h2 class="title">إشراقة ورد وأمل 🌸✨</h2>
 
     <div class="card" id="gate">
-        <div class="butterfly">🥀</div>
-        <p class="intro">رسالة خاصة من قلب ضياء إلى:</p>
+        <div class="butterfly">🦋</div>
+        <p class="intro">رسالة حب وأمل من قلب ضياء إلى:</p>
         <div class="name-container">
-            <div id="scatterSmokeContainer"
+            <div id="scatterSparkleContainer"
                 style="position: absolute; inset: 0; pointer-events: none; overflow: visible;"></div>
-            <h1 class="name">شـيـمـاء 🖤</h1>
+            <h1 class="name">شـيـمـاء 💖</h1>
         </div>
-        <p class="subtitle">كلمات خرجت من عتمة البعد ومسافات الشمال إلى الخليل..</p>
-        <input class="input" id="codeInput" type="password" inputmode="numeric" placeholder="أدخلي كلمة السر..."
-            aria-label="كلمة السر" />
-        <button class="button" id="unlockBtn">افتحي الرسالة 💌</button>
+        <p class="subtitle">كل مسافة تقصر بالأمل، وكل تعب يزهر غداً أجمل بيننا..</p>
+
+        <div class="input-wrap">
+            <input class="input" id="codeInput" type="password" inputmode="numeric" placeholder="أدخلي كلمة السر..."
+                aria-label="كلمة السر" />
+            <button type="button" class="toggle-pass" id="togglePass" title="إظهار أو إخفاء كلمة السر"
+                aria-label="إظهار أو إخفاء كلمة السر">👁️</button>
+        </div>
+
+        <button class="button" id="unlockBtn">افتحي الرسالة المزهرة 💐</button>
         <p class="error" id="error"></p>
     </div>
 
@@ -38,18 +44,12 @@
                 <img class="wing wingRight" src="wing.png" alt="" aria-hidden="true" />
             </div>
             <div class="letter">
-                <div class="letterSeal" aria-hidden="true">🥀</div>
-                <p class="letterTo">إلى الغالية شـيـمـاء 🖤</p>
-                <div class="hearts">💔🥀🖤</div>
-                <p class="letterBody">
-                    يا شيماء والله بوجعني قلبي لما بنحكي وبنزعل من بعض، وأنا عارف قديش إنتِ مضغوطة وأنا كمان ضغط الجامعة
-                    والدراسة واكل لحمي وظروفي صعبة عليّ، وإحنا لسه بأول الطريق والدنيا عم تختبر صبرنا، بس كل همني وبهدفي
-                    إني أخلص الجامعة وأتعب لحتى بعد ما نتخرج أجي وأتزوجك بالحلال وتبقي نصيبي وداري قدام الكل، وعتابي الك
-                    مش لاني زعلان منك وبس إلا لاني بحبك بصدق وبخاف أفقدك بهالظروف الصعبة، وتمنيت لو حسيتي بنقاء نيتي
-                    وقديش إنتِ غالية عليّ وأنا مستعد أتحمل كل تعب الدنيا بس لنكون لبعض بالحلال.
-                </p>
+                <div class="letterSeal" aria-hidden="true">🌸</div>
+                <p class="letterTo">إلى الغالية شـيـمـاء 💖</p>
+                <div class="hearts">🌸✨💖</div>
+                <p class="loveQuote" dir="ltr">I love you</p>
                 <p class="letterSign">دائماً وأبداً، من:</p>
-                <p class="letterFrom">ضياء ✨</p>
+                <p class="letterFrom">ضياء 🌟</p>
 
                 <div class="insta-container">
                     <a href="https://www.instagram.com/shaimaa_youseef2007" target="_blank" rel="noopener noreferrer"
@@ -58,8 +58,9 @@
                             <svg class="insta-icon" viewBox="0 0 24 24" aria-hidden="true">
                                 <defs>
                                     <linearGradient id="instaGrad" x1="0%" y1="100%" x2="100%" y2="0%">
-                                        <stop offset="0%" stop-color="#434343" />
-                                        <stop offset="100%" stop-color="#000000" />
+                                        <stop offset="0%" stop-color="#ff758c" />
+                                        <stop offset="50%" stop-color="#ff7eb3" />
+                                        <stop offset="100%" stop-color="#ffd166" />
                                     </linearGradient>
                                 </defs>
                                 <path fill="url(#instaGrad)"
@@ -72,17 +73,17 @@
             </div>
             <div class="actions">
                 <div class="audio-control-wrap">
-                    <button class="muteBtn" id="muteBtn" title="كتم / تشغيل">🔊</button>
+                    <button type="button" class="muteBtn" id="muteBtn" title="كتم / تشغيل">🔊</button>
                     <input type="range" id="volumeSlider" class="volumeSlider" min="0" max="1" step="0.05" value="0.85"
                         title="مستوى الصوت">
                 </div>
-                <button class="closeBtn" id="closeBtn">إغلاق الرسالة 🖤</button>
+                <button type="button" class="closeBtn" id="closeBtn">إغلاق الرسالة 🌸</button>
             </div>
         </div>
     </div>
 
-    <audio id="song" src="song.mp3" loop preload="auto">[cite: 4]</audio>
-    <script src="script.js">[cite: 3]</script>
+    <audio id="song" src="song.mp3" loop preload="auto"></audio>
+    <script src="script.js"></script>
 </body>
 
 </html>
