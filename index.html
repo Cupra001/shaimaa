@@ -3,83 +3,97 @@
 
 <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
     <title>🌸 إشراقة شيماء ✨</title>
     <link rel="icon" type="image/png" href="icon.png" />
     <link rel="stylesheet" href="style.css" />
 </head>
 
 <body>
-    <div class="bloom-glow" id="bloomGlow" aria-hidden="true"></div>
+    <div class="bg-scene" aria-hidden="true"></div>
+    <div class="smoke-layer" aria-hidden="true"></div>
+    <div class="bloom-glow" aria-hidden="true"></div>
     <div class="particles" id="particles" aria-hidden="true"></div>
 
     <h2 class="title">إشراقة ورد وأمل 🌸✨</h2>
 
-    <div class="card" id="gate">
-        <div class="butterfly">🦋</div>
-        <p class="intro">رسالة حب وأمل من قلب ضياء إلى:</p>
-        <div class="name-container">
-            <div id="scatterSparkleContainer"
-                style="position: absolute; inset: 0; pointer-events: none; overflow: visible;"></div>
-            <h1 class="name">شـيـمـاء 💖</h1>
-        </div>
-        <p class="subtitle">كل مسافة تقصر بالأمل، وكل تعب يزهر غداً أجمل بيننا..</p>
+    <main class="stage">
+        <div class="card" id="gate">
+            <div class="butterfly" aria-hidden="true">🦋</div>
+            <p class="intro">رسالة حب وأمل من قلب ضياء إلى:</p>
+            <div class="name-container">
+                <div id="scatterSparkleContainer" class="scatter-sparkle-box" aria-hidden="true"></div>
+                <h1 class="name">شـيـمـاء 💖</h1>
+            </div>
+            <p class="subtitle">كل مسافة تقصر بالأمل، وكل تعب يزهر غداً أجمل بيننا..</p>
 
-        <div class="input-wrap">
-            <input class="input" id="codeInput" type="password" inputmode="numeric" placeholder="أدخلي كلمة السر..."
-                aria-label="كلمة السر" />
-            <button type="button" class="toggle-pass" id="togglePass" title="إظهار أو إخفاء كلمة السر"
-                aria-label="إظهار أو إخفاء كلمة السر">👁️</button>
-        </div>
+            <div class="input-wrap">
+                <input class="input" id="codeInput" type="password" inputmode="numeric" dir="ltr"
+                    placeholder="أدخلي كلمة السر..." aria-label="كلمة السر" autocomplete="off" />
+                <button type="button" class="toggle-pass" id="togglePass" title="إظهار أو إخفاء كلمة السر"
+                    aria-label="إظهار أو إخفاء كلمة السر">👁️</button>
+            </div>
 
-        <button class="button" id="unlockBtn">افتحي الرسالة المزهرة 💐</button>
-        <p class="error" id="error"></p>
-    </div>
+            <button type="button" class="button" id="unlockBtn">افتحي الرسالة المزهرة 💐</button>
+            <p class="error" id="error" role="alert" aria-live="polite"></p>
+        </div>
+    </main>
+
+    <!-- طبقة تطاير الورد فوق الكلام في الشاشة الرئيسية -->
+    <div class="roses-field" id="rosesField" aria-hidden="true"></div>
 
     <div class="overlay" id="overlay" hidden>
-        <div class="hearts-rain" id="heartsRain" aria-hidden="true"></div>
         <div class="envelopeWrap">
-            <div class="wings">
-                <img class="wing wingLeft" src="wing.png" alt="" aria-hidden="true" />
-                <img class="wing wingRight" src="wing.png" alt="" aria-hidden="true" />
-            </div>
-            <div class="letter">
-                <div class="letterSeal" aria-hidden="true">🌸</div>
-                <p class="letterTo">إلى الغالية شـيـمـاء 💖</p>
-                <div class="hearts">🌸✨💖</div>
-                <p class="loveQuote" dir="ltr">I love you</p>
-                <p class="letterSign">دائماً وأبداً، من:</p>
-                <p class="letterFrom">ضياء 🌟</p>
+            <div class="flightAssembly">
+                <div class="wings" aria-hidden="true">
+                    <img class="wing wingLeft" src="wing.png" alt="" />
+                    <img class="wing wingRight" src="wing.png" alt="" />
+                </div>
 
-                <div class="insta-container">
-                    <a href="https://www.instagram.com/shaimaa_youseef2007" target="_blank" rel="noopener noreferrer"
-                        class="insta-link" title="حساب الإنستغرام">
-                        <span class="insta-badge">
-                            <svg class="insta-icon" viewBox="0 0 24 24" aria-hidden="true">
-                                <defs>
-                                    <linearGradient id="instaGrad" x1="0%" y1="100%" x2="100%" y2="0%">
-                                        <stop offset="0%" stop-color="#ff758c" />
-                                        <stop offset="50%" stop-color="#ff7eb3" />
-                                        <stop offset="100%" stop-color="#ffd166" />
-                                    </linearGradient>
-                                </defs>
-                                <path fill="url(#instaGrad)"
-                                    d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z" />
-                            </svg>
-                        </span>
-                        <span class="insta-user" dir="ltr">@shaimaa_youseef2007</span>
-                    </a>
+                <div class="letter">
+                    <div class="letterSeal" aria-hidden="true">🌹</div>
+                    <p class="letterTo pink-glow">إلى الغالية شـيـمـاء 💖</p>
+                    <div class="hearts" aria-hidden="true">🌹✨💖</div>
+                    <p class="loveArabic pink-glow">✿ بحـبـك ✿</p>
+                    <p class="loveQuote pink-glow" dir="ltr">I love you</p>
+                    <p class="letterSign pink-glow">دائماً وأبداً، من:</p>
+                    <p class="letterFrom pink-glow">ضياء 🌟</p>
+
+                    <div class="insta-container">
+                        <a href="https://www.instagram.com/shaimaa_youseef2007" target="_blank"
+                            rel="noopener noreferrer" class="insta-link" title="حساب الإنستغرام">
+                            <span class="insta-badge">
+                                <svg class="insta-icon" viewBox="0 0 24 24" aria-hidden="true">
+                                    <defs>
+                                        <linearGradient id="instaGrad" x1="0%" y1="100%" x2="100%" y2="0%">
+                                            <stop offset="0%" stop-color="#ff758c" />
+                                            <stop offset="50%" stop-color="#ff7eb3" />
+                                            <stop offset="100%" stop-color="#ffd166" />
+                                        </linearGradient>
+                                    </defs>
+                                    <path fill="url(#instaGrad)"
+                                        d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z" />
+                                </svg>
+                            </span>
+                            <span class="insta-user" dir="ltr">@shaimaa_youseef2007</span>
+                        </a>
+                    </div>
                 </div>
             </div>
+
             <div class="actions">
                 <div class="audio-control-wrap">
-                    <button type="button" class="muteBtn" id="muteBtn" title="كتم / تشغيل">🔊</button>
+                    <button type="button" class="muteBtn" id="muteBtn" title="كتم / تشغيل"
+                        aria-label="كتم أو تشغيل الصوت">🔊</button>
                     <input type="range" id="volumeSlider" class="volumeSlider" min="0" max="1" step="0.05" value="0.85"
-                        title="مستوى الصوت">
+                        title="مستوى الصوت" aria-label="مستوى الصوت">
                 </div>
                 <button type="button" class="closeBtn" id="closeBtn">إغلاق الرسالة 🌸</button>
             </div>
         </div>
+
+        <!-- طبقة تساقط الورد من فوق الكلام والرسالة -->
+        <div class="hearts-rain" id="heartsRain" aria-hidden="true"></div>
     </div>
 
     <audio id="song" src="song.mp3" loop preload="auto"></audio>

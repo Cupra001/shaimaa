@@ -1,4 +1,5 @@
 const SECRET = '612195';
+
 const gate = document.getElementById('gate');
 const overlay = document.getElementById('overlay');
 const input = document.getElementById('codeInput');
@@ -10,49 +11,115 @@ const volumeSlider = document.getElementById('volumeSlider');
 const errorEl = document.getElementById('error');
 const song = document.getElementById('song');
 const heartsRain = document.getElementById('heartsRain');
+const rosesField = document.getElementById('rosesField');
+const particlesContainer = document.getElementById('particles');
+const scatterContainer = document.getElementById('scatterSparkleContainer');
+
+const isSmallScreen = () => window.matchMedia('(max-width: 767px)').matches;
+const isCoarsePointer = () => window.matchMedia('(pointer: coarse)').matches;
+
 let rainTimer = null;
+let scatterTimer = null;
+let resizeTimeout = null;
 
-const CELEBRATION_EMOJIS = ['🌸', '💖', '✨', '🌷', '🦋', '💛'];
+function randomBetween(min, max) {
+    return min + Math.random() * (max - min);
+}
 
-function spawnJoyBurst(originX, originY, count = 26) {
+function initFloatingRoses() {
+    if (!rosesField) return;
+    rosesField.innerHTML = '';
+
+    const mobile = isSmallScreen();
+    const count = mobile ? 10 : 16;
+
     for (let i = 0; i < count; i++) {
-        const el = document.createElement('span');
-        el.className = 'burst-item';
-        el.textContent = CELEBRATION_EMOJIS[Math.floor(Math.random() * CELEBRATION_EMOJIS.length)];
+        const rose = document.createElement('div');
+        rose.className = 'real-rose rose-float';
 
-        const angle = (Math.PI * 2 * i) / count + (Math.random() - 0.5) * 0.35;
-        const dist = 80 + Math.random() * 170;
+        const size = mobile
+            ? randomBetween(62, 92).toFixed(0)
+            : randomBetween(82, 128).toFixed(0);
+        const dur = randomBetween(9, 15.5).toFixed(2);
+        const delay = (-randomBetween(0, 14)).toFixed(2);
+        const sway = randomBetween(-65, 65).toFixed(1);
+        const rotStart = randomBetween(-35, 35).toFixed(0);
+        const scale = randomBetween(0.95, 1.25).toFixed(2);
+        const maxOp = randomBetween(0.86, 0.98).toFixed(2);
+
+        rose.style.left = `${randomBetween(2, 90).toFixed(1)}%`;
+        rose.style.setProperty('--rose-size', `${size}px`);
+        rose.style.setProperty('--dur', `${dur}s`);
+        rose.style.setProperty('--delay', `${delay}s`);
+        rose.style.setProperty('--sway', `${sway}px`);
+        rose.style.setProperty('--rotStart', `${rotStart}deg`);
+        rose.style.setProperty('--scale', scale);
+        rose.style.setProperty('--maxOp', maxOp);
+
+        rosesField.appendChild(rose);
+    }
+}
+
+initFloatingRoses();
+
+function spawnJoyBurst(originX, originY, count = 22) {
+    const mobile = isSmallScreen();
+    const actualCount = mobile ? Math.min(count, 14) : count;
+
+    for (let i = 0; i < actualCount; i++) {
+        const rose = document.createElement('div');
+        rose.className = 'real-rose rose-burst';
+
+        const angle = (Math.PI * 2 * i) / actualCount + randomBetween(-0.25, 0.25);
+        const dist = randomBetween(85, mobile ? 150 : 210);
         const tx = Math.cos(angle) * dist;
-        const ty = Math.sin(angle) * dist - 30;
-        const rot = (Math.random() - 0.5) * 420;
-        const dur = (0.85 + Math.random() * 0.55).toFixed(2) + 's';
+        const ty = Math.sin(angle) * dist - 25;
+        const rot = randomBetween(-220, 220).toFixed(0);
+        const dur = randomBetween(0.95, 1.45).toFixed(2);
+        const size = mobile
+            ? randomBetween(56, 82).toFixed(0)
+            : randomBetween(72, 108).toFixed(0);
+        const endScale = randomBetween(1.05, 1.45).toFixed(2);
 
-        el.style.left = `${originX}px`;
-        el.style.top = `${originY}px`;
-        el.style.fontSize = `${18 + Math.random() * 14}px`;
-        el.style.setProperty('--tx', `${tx.toFixed(1)}px`);
-        el.style.setProperty('--ty', `${ty.toFixed(1)}px`);
-        el.style.setProperty('--rot', `${rot.toFixed(0)}deg`);
-        el.style.setProperty('--dur', dur);
+        rose.style.left = `${(originX - Number(size) / 2).toFixed(1)}px`;
+        rose.style.top = `${(originY - Number(size) / 2).toFixed(1)}px`;
+        rose.style.setProperty('--rose-size', `${size}px`);
+        rose.style.setProperty('--tx', `${tx.toFixed(1)}px`);
+        rose.style.setProperty('--ty', `${ty.toFixed(1)}px`);
+        rose.style.setProperty('--rot', `${rot}deg`);
+        rose.style.setProperty('--dur', `${dur}s`);
+        rose.style.setProperty('--endScale', endScale);
 
-        document.body.appendChild(el);
-        setTimeout(() => el.remove(), parseFloat(dur) * 1000 + 60);
+        document.body.appendChild(rose);
+        setTimeout(() => rose.remove(), parseFloat(dur) * 1000 + 100);
     }
 }
 
 function tryUnlock() {
+    if (!input || !errorEl || !gate || !overlay) return;
+
     if (input.value.trim() === SECRET) {
         errorEl.textContent = '';
-        const rect = unlockBtn.getBoundingClientRect();
-        spawnJoyBurst(rect.left + rect.width / 2, rect.top + rect.height / 2, 28);
+
+        if (unlockBtn) {
+            const rect = unlockBtn.getBoundingClientRect();
+            const cx = rect.left + rect.width / 2 || window.innerWidth / 2;
+            const cy = rect.top + rect.height / 2 || window.innerHeight / 2;
+            spawnJoyBurst(cx, cy, 22);
+        }
 
         gate.hidden = true;
         overlay.hidden = false;
         startHeartsRain();
-        song.currentTime = 0;
-        song.volume = volumeSlider.value;
-        const p = song.play();
-        if (p) p.catch(() => { });
+
+        if (song) {
+            song.currentTime = 0;
+            song.volume = volumeSlider ? parseFloat(volumeSlider.value) : 0.85;
+            const playPromise = song.play();
+            if (playPromise && typeof playPromise.catch === 'function') {
+                playPromise.catch(() => { });
+            }
+        }
     } else {
         errorEl.textContent = 'كلمة السر غير صحيحة 🌸 حاولي مرة أخرى بحب';
         errorEl.classList.remove('shake');
@@ -63,7 +130,7 @@ function tryUnlock() {
     }
 }
 
-if (togglePassBtn) {
+if (togglePassBtn && input) {
     togglePassBtn.addEventListener('click', () => {
         const isPass = input.type === 'password';
         input.type = isPass ? 'text' : 'password';
@@ -71,139 +138,170 @@ if (togglePassBtn) {
     });
 }
 
-unlockBtn.addEventListener('click', tryUnlock);
-input.addEventListener('keydown', (e) => {
-    if (e.key === 'Enter') tryUnlock();
-});
+if (unlockBtn) {
+    unlockBtn.addEventListener('click', tryUnlock);
+}
 
-closeBtn.addEventListener('click', () => {
-    overlay.hidden = true;
-    gate.hidden = false;
-    input.value = '';
-    input.type = 'password';
-    if (togglePassBtn) togglePassBtn.textContent = '👁️';
-    song.pause();
-    stopHeartsRain();
-});
+if (input) {
+    input.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') tryUnlock();
+    });
+}
 
-muteBtn.addEventListener('click', () => {
-    song.muted = !song.muted;
-    muteBtn.textContent = song.muted ? '🔇' : '🔊';
-});
+if (closeBtn) {
+    closeBtn.addEventListener('click', () => {
+        if (overlay) overlay.hidden = true;
+        if (gate) gate.hidden = false;
+        if (input) {
+            input.value = '';
+            input.type = 'password';
+        }
+        if (togglePassBtn) togglePassBtn.textContent = '👁️';
+        if (song) song.pause();
+        stopHeartsRain();
+    });
+}
 
-volumeSlider.addEventListener('input', (e) => {
-    const val = parseFloat(e.target.value);
-    song.volume = val;
-    if (val === 0) {
-        song.muted = true;
-        muteBtn.textContent = '🔇';
-    } else {
-        song.muted = false;
-        muteBtn.textContent = '🔊';
-    }
-});
+if (muteBtn && song) {
+    muteBtn.addEventListener('click', () => {
+        song.muted = !song.muted;
+        muteBtn.textContent = song.muted ? '🔇' : '🔊';
+    });
+}
 
-/* توليد بريق ذهبي متناثر ومستمر حول اسم شيماء */
-const scatterContainer = document.getElementById('scatterSparkleContainer');
+if (volumeSlider && song) {
+    volumeSlider.addEventListener('input', (e) => {
+        const val = parseFloat(e.target.value);
+        song.volume = val;
+        if (val === 0) {
+            song.muted = true;
+            if (muteBtn) muteBtn.textContent = '🔇';
+        } else {
+            song.muted = false;
+            if (muteBtn) muteBtn.textContent = '🔊';
+        }
+    });
+}
+
 if (scatterContainer) {
-    setInterval(() => {
+    scatterTimer = setInterval(() => {
+        if (!gate || gate.hidden) return;
+
         const spark = document.createElement('div');
         spark.className = 'scatter-sparkle';
 
-        const rx = (Math.random() - 0.5) * 165;
-        const ry = (Math.random() - 0.5) * 62;
+        const rx = randomBetween(-75, 75).toFixed(1);
+        const ry = randomBetween(-28, 28).toFixed(1);
 
         spark.style.left = `calc(50% + ${rx}px)`;
         spark.style.top = `calc(50% + ${ry}px)`;
 
-        const size = Math.random() * 14 + 8;
+        const size = randomBetween(7, 19).toFixed(0);
         spark.style.width = `${size}px`;
         spark.style.height = `${size}px`;
 
-        const startX = (Math.random() - 0.5) * 26;
-        const startY = (Math.random() - 0.5) * 26;
-        const endX = startX + (Math.random() - 0.5) * 65;
-        const endY = startY + (Math.random() - 0.5) * 65 - 22;
+        const startX = randomBetween(-11, 11).toFixed(0);
+        const startY = randomBetween(-11, 11).toFixed(0);
+        const endX = (parseFloat(startX) + randomBetween(-28, 28)).toFixed(0);
+        const endY = (parseFloat(startY) + randomBetween(-28, 28) - 18).toFixed(0);
 
         spark.style.setProperty('--sx1', `${startX}px`);
         spark.style.setProperty('--sy1', `${startY}px`);
         spark.style.setProperty('--sx2', `${endX}px`);
         spark.style.setProperty('--sy2', `${endY}px`);
 
-        const duration = Math.random() * 0.75 + 0.75;
+        const duration = randomBetween(0.75, 1.5).toFixed(2);
         spark.style.animationDuration = `${duration}s`;
 
         scatterContainer.appendChild(spark);
-        setTimeout(() => spark.remove(), duration * 1000);
-    }, 85);
+        setTimeout(() => spark.remove(), parseFloat(duration) * 1000 + 60);
+    }, isSmallScreen() ? 150 : 95);
 }
 
-/* تأثير البريق المضيء المتبع لحركة الماوس أو اللمس */
-let throttleTimer = false;
+let lastMoveTime = 0;
 window.addEventListener('pointermove', (e) => {
-    if (!throttleTimer) {
-        createSparkleParticle(e.clientX, e.clientY);
-        throttleTimer = true;
-        setTimeout(() => {
-            throttleTimer = false;
-        }, 45);
-    }
-});
+    if (isCoarsePointer()) return;
+    const now = performance.now();
+    if (now - lastMoveTime < 55) return;
+    lastMoveTime = now;
+    createSparkleParticle(e.clientX, e.clientY);
+}, { passive: true });
 
 function createSparkleParticle(x, y) {
     const spark = document.createElement('div');
     spark.className = 'mouse-sparkle';
 
-    const size = Math.random() * 18 + 10;
+    const size = randomBetween(8, 22).toFixed(0);
+    const moveX = randomBetween(-23, 23).toFixed(0);
+    const moveY = (randomBetween(-23, 23) - 16).toFixed(0);
+    const duration = randomBetween(0.45, 1.05).toFixed(2);
+
     spark.style.width = `${size}px`;
     spark.style.height = `${size}px`;
-    spark.style.left = `${x - size / 2}px`;
-    spark.style.top = `${y - size / 2}px`;
-
-    const moveX = (Math.random() - 0.5) * 55;
-    const moveY = (Math.random() - 0.5) * 55 - 20;
+    spark.style.left = `${(x - Number(size) / 2).toFixed(1)}px`;
+    spark.style.top = `${(y - Number(size) / 2).toFixed(1)}px`;
     spark.style.setProperty('--mx', `${moveX}px`);
     spark.style.setProperty('--my', `${moveY}px`);
-
-    const duration = Math.random() * 0.7 + 0.55;
     spark.style.animationDuration = `${duration}s`;
 
     document.body.appendChild(spark);
-    setTimeout(() => spark.remove(), duration * 1000);
+    setTimeout(() => spark.remove(), parseFloat(duration) * 1000 + 60);
 }
 
-/* تساقط الورود والقلوب والفراشات المبهجة داخل الرسالة */
-const RAIN = ['🌸', '💖', '✨', '🌷', '🦋', '💐'];
 function startHeartsRain() {
     stopHeartsRain();
+    if (!heartsRain) return;
+
+    const mobile = isSmallScreen();
+    const intervalMs = mobile ? 520 : 360;
+
     rainTimer = setInterval(() => {
-        const s = document.createElement('span');
-        s.className = 'fall';
-        s.textContent = RAIN[Math.floor(Math.random() * RAIN.length)];
-        s.style.left = Math.random() * 100 + '%';
-        s.style.fontSize = (16 + Math.random() * 18) + 'px';
-        s.style.animationDuration = (4 + Math.random() * 4) + 's';
-        heartsRain.appendChild(s);
-        setTimeout(() => s.remove(), 8000);
-    }, 320);
+        if (!heartsRain || (overlay && overlay.hidden)) return;
+
+        const rose = document.createElement('div');
+        rose.className = 'real-rose rose-fall';
+
+        const size = mobile
+            ? randomBetween(64, 96).toFixed(0)
+            : randomBetween(86, 132).toFixed(0);
+        const dur = randomBetween(5.2, 8.5).toFixed(2);
+        const sway = randomBetween(-55, 55).toFixed(1);
+
+        rose.style.left = `${randomBetween(1, 89).toFixed(1)}%`;
+        rose.style.setProperty('--rose-size', `${size}px`);
+        rose.style.setProperty('--sway', `${sway}px`);
+        rose.style.animationDuration = `${dur}s`;
+
+        heartsRain.appendChild(rose);
+        setTimeout(() => rose.remove(), parseFloat(dur) * 1000 + 120);
+    }, intervalMs);
 }
 
 function stopHeartsRain() {
     if (rainTimer) clearInterval(rainTimer);
     rainTimer = null;
-    heartsRain.innerHTML = '';
+    if (heartsRain) heartsRain.innerHTML = '';
 }
 
-/* عناصر عائمة مزدهرة في الخلفية */
-const EMOJIS = ['🌸', '✨', '💖', '🌷', '🦋', '☀️'];
-const container = document.getElementById('particles');
-for (let i = 0; i < 22; i++) {
-    const span = document.createElement('span');
-    span.className = 'particle';
-    span.textContent = EMOJIS[i % EMOJIS.length];
-    span.style.left = Math.random() * 100 + '%';
-    span.style.fontSize = (16 + Math.random() * 18) + 'px';
-    span.style.animationDuration = (8 + Math.random() * 10) + 's';
-    span.style.animationDelay = (Math.random() * 10) + 's';
-    container.appendChild(span);
+if (particlesContainer) {
+    const SPARKLES = ['✨', '💖', '🦋'];
+    const totalParticles = isSmallScreen() ? 8 : 14;
+
+    for (let i = 0; i < totalParticles; i++) {
+        const span = document.createElement('span');
+        span.className = 'particle';
+        span.textContent = SPARKLES[i % SPARKLES.length];
+        span.style.left = `${randomBetween(3, 97).toFixed(1)}%`;
+        span.style.fontSize = `${randomBetween(14, 24).toFixed(0)}px`;
+        span.style.animationDuration = `${randomBetween(10, 18).toFixed(1)}s`;
+        span.style.animationDelay = `${(-randomBetween(0, 12)).toFixed(1)}s`;
+        particlesContainer.appendChild(span);
+    }
 }
+
+window.addEventListener('resize', () => {
+    clearTimeout(resizeTimeout);
+    resizeTimeout = setTimeout(() => {
+        initFloatingRoses();
+    }, 200);
+});
